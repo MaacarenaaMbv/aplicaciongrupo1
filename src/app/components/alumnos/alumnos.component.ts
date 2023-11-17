@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { delay } from 'rxjs';
 import { Alumno } from 'src/app/models/Alumno';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 
@@ -36,16 +37,14 @@ export class AlumnosComponent implements OnInit {
 
   asignarAlumnosEquipos(): void {
     var numEquipos = this.equipos.length;
-    console.log(this.equipos);
-    
-
     while (this.alumnos.length != 0) {
       var alumosRestantes = this.alumnos.length;
       var alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
       var equipoAsignado = 0;
       var hayEspacio = false;
-      do {
-        if (this.equipos[equipoAsignado].length <= 3) {
+
+      while (hayEspacio === false) {
+        if (this.equipos[equipoAsignado].length < 3) {
           hayEspacio = true;
         } else {
           equipoAsignado = parseInt(Math.random() * numEquipos + "");
@@ -53,7 +52,8 @@ export class AlumnosComponent implements OnInit {
         if (alumosRestantes === 1) {
           hayEspacio = true;
         }
-      } while (hayEspacio===false);
+      }
+      
       this.equipos[equipoAsignado].push(this.alumnos[alumnoRandom]);
       this.alumnos.splice(alumnoRandom, 1);
     }
