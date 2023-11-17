@@ -28,10 +28,23 @@ export class AlumnosComponent implements OnInit {
   }
 
   asignarAlumnosEquipos(): void {
-    while (this.alumnos.length!=0) {
-      var alumosRestantes=this.alumnos.length;
-      var random=parseInt(Math.random()*alumosRestantes+"");
-      
+    var numEquipos = this.equipos.length;
+    while (this.alumnos.length != 0) {
+      var alumosRestantes = this.alumnos.length;
+      var alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
+      var equipoAsignado = 0;
+      var hayEspacio = false;
+      do {
+        if (this.equipos[equipoAsignado].length < 4) {
+          hayEspacio = true;
+        } else {
+          equipoAsignado = parseInt(Math.random() * numEquipos + "");
+        }
+        if (alumosRestantes===1) {
+          hayEspacio=true;
+        }
+      } while (hayEspacio);
+      this.equipos[equipoAsignado].push(this.alumnos[alumnoRandom]);
     }
   }
 }
