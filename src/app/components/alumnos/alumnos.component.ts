@@ -8,7 +8,7 @@ import { AlumnosService } from 'src/app/services/alumnos.service';
   styleUrls: ['./alumnos.component.css']
 })
 export class AlumnosComponent implements OnInit {
-  public alumnos!: Alumno;
+  public alumnos!: Array<Alumno>;
   public equipos!: Array<Array<Alumno>>;
   constructor(private _service: AlumnosService) {
 
@@ -23,12 +23,15 @@ export class AlumnosComponent implements OnInit {
   generarEquipos(): void {
     var numEquipos = 8;
     for (let i = 0; i < numEquipos; i++) {
-      var segRandom=Math.floor(Math.random()*4)
       this.equipos.push([]);
     }
   }
 
   asignarAlumnosEquipos(): void {
-
+    while (this.alumnos.length!=0) {
+      var alumosRestantes=this.alumnos.length;
+      var random=parseInt(Math.random()*alumosRestantes+"");
+      
+    }
   }
 }
