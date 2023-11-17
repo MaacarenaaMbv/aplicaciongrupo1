@@ -9,15 +9,22 @@ import { AlumnosService } from 'src/app/services/alumnos.service';
 })
 export class AlumnosComponent implements OnInit {
   public alumnos!: Array<Alumno>;
-  public equipos!: Array<Array<Alumno>>;
+  public equipos: Array<Array<Alumno>>;
   constructor(private _service: AlumnosService) {
-
+    this.equipos = new Array<Array<Alumno>>();
   }
   ngOnInit(): void {
     const idcurso = 2023;
     this._service.getAlumnos(idcurso).subscribe((dato) => {
       this.alumnos = dato;
+      console.log(this.alumnos);
+
     });
+  }
+
+  ejecutarTodo() {
+    this.generarEquipos();
+    this.asignarAlumnosEquipos();
   }
 
   generarEquipos(): void {
@@ -33,18 +40,19 @@ export class AlumnosComponent implements OnInit {
       var alumosRestantes = this.alumnos.length;
       var alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
       var equipoAsignado = 0;
-      var hayEspacio = false;
+      var noHayEspacio = true;
       do {
-        if (this.equipos[equipoAsignado].length < 4) {
-          hayEspacio = true;
+        if (this.equipos[equipoAsignado].length >= 3) {
+          noHayEspacio = false;
         } else {
           equipoAsignado = parseInt(Math.random() * numEquipos + "");
         }
-        if (alumosRestantes===1) {
-          hayEspacio=true;
+        if (alumosRestantes === 1) {
+          noHayEspacio = false;
         }
-      } while (hayEspacio);
+      } while (noHayEspacio);
       this.equipos[equipoAsignado].push(this.alumnos[alumnoRandom]);
+      this.alumnos.splice(alumnoRandom, 1);
     }
   }
 }
