@@ -40,7 +40,7 @@ export class AlumnosComponent implements OnInit {
     while (this.alumnos.length != 0) {
       var alumosRestantes = this.alumnos.length;
       var alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
-      var equipoAsignado = 0;
+      var equipoAsignado = parseInt(Math.random() * numEquipos + "");
       var hayEspacio = false;
 
       while (hayEspacio === false) {
@@ -53,7 +53,7 @@ export class AlumnosComponent implements OnInit {
           hayEspacio = true;
         }
       }
-      
+
       this.equipos[equipoAsignado].push(this.alumnos[alumnoRandom]);
       this.alumnos.splice(alumnoRandom, 1);
     }
