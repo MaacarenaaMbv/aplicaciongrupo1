@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { delay } from 'rxjs';
+import { Observable, Subscription, delay, interval, of, takeWhile, tap } from 'rxjs';
 import { Alumno } from 'src/app/models/Alumno';
 import { AlumnosService } from 'src/app/services/alumnos.service';
 
@@ -10,22 +10,26 @@ import { AlumnosService } from 'src/app/services/alumnos.service';
 })
 export class AlumnosComponent implements OnInit {
   public alumnos!: Array<Alumno>;
-  public equipos: Array<Array<Alumno>>;
+  public equipos!: Array<Array<Alumno>>;
+  private subscripcion: Subscription;
+
   constructor(private _service: AlumnosService) {
     this.equipos = new Array<Array<Alumno>>();
+    this.subscripcion = new Subscription();
   }
   ngOnInit(): void {
+
+  }
+  cargarAlumnos(): void {
     const idcurso = 2023;
     this._service.getAlumnos(idcurso).subscribe((dato) => {
       this.alumnos = dato;
-      console.log(this.alumnos);
-
     });
   }
 
   ejecutarTodo() {
-    this.generarEquipos();
-    this.asignarAlumnosEquipos();
+    this.subscripcion.unsubscribe();
+    this.subscripcion = this.asignarAlumnosEquipos();
   }
 
   generarEquipos(): void {
@@ -35,13 +39,16 @@ export class AlumnosComponent implements OnInit {
     }
   }
 
-  asignarAlumnosEquipos(): void {
-    var numEquipos = this.equipos.length;
-    while (this.alumnos.length != 0) {
-      var alumosRestantes = this.alumnos.length;
-      var alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
-      var equipoAsignado = parseInt(Math.random() * numEquipos + "");
-      var hayEspacio = false;
+  asignarAlumnosEquipos(): Subscription {
+    this.cargarAlumnos();
+    this.equipos = [];
+    this.generarEquipos();
+    let numEquipos = this.equipos.length;
+    return interval(1000).pipe(takeWhile(() => this.alumnos.length != 0)).subscribe(() => {
+      let alumosRestantes = this.alumnos.length;
+      let alumnoRandom = parseInt(Math.random() * alumosRestantes + "");
+      let equipoAsignado = parseInt(Math.random() * numEquipos + "");
+      let hayEspacio = false;
 
       while (hayEspacio === false) {
         if (this.equipos[equipoAsignado].length < 3) {
@@ -53,9 +60,8 @@ export class AlumnosComponent implements OnInit {
           hayEspacio = true;
         }
       }
-
       this.equipos[equipoAsignado].push(this.alumnos[alumnoRandom]);
       this.alumnos.splice(alumnoRandom, 1);
-    }
+    });
   }
 }
