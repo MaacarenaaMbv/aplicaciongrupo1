@@ -1,0 +1,7 @@
+<!-- equipo.component.html -->
+<div *ngFor="let equipo of equipos; let i = index">
+  <h3>Equipo {{ i + 1 }}</h3>
+  <ul>
+    <li *ngFor="let alumno of equipo">{{ alumno.nombre }} </li>
+  </ul>
+</div>
