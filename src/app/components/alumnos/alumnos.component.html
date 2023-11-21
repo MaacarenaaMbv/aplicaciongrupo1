@@ -1,4 +1,7 @@
 <button (click)="ejecutarTodo()">Crear Grupos</button>
+<ul>
+    <li *ngFor="let alumno of alumnos">{{alumno.nombre}} {{alumno.apellidos}}</li>
+</ul>
 <table *ngFor="let equipo of equipos;let i =index">
     <thead>
         <tr>

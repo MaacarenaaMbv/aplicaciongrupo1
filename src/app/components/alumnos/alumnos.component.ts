@@ -18,7 +18,7 @@ export class AlumnosComponent implements OnInit {
     this.subscripcion = new Subscription();
   }
   ngOnInit(): void {
-
+    this.cargarAlumnos();
   }
   cargarAlumnos(): void {
     const idcurso = 2023;
