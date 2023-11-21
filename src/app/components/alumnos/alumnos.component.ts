@@ -24,6 +24,7 @@ export class AlumnosComponent implements OnInit {
     const idcurso = 2023;
     this._service.getAlumnos(idcurso).subscribe((dato) => {
       this.alumnos = dato;
+      this.alumnos.splice(25);
     });
   }
 
